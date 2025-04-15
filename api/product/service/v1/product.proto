@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package product.service.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "kratos/api/product/service/v1;v1";
+
+service ProductService {
+  rpc CreateProduct (CreateProductRequest) returns (ProductReply) {
+    option (google.api.http) = {
+      post: "/v1/users/{user_id}/products"
+      body: "*"
+    };
+  }
+
+  rpc GetProduct (ProductRequest) returns (ProductReply) {
+    option (google.api.http) = {
+      get: "/v1/users/{user_id}/products/{id}"
+    };
+  }
+
+  rpc UpdateProduct (UpdateProductRequest) returns (ProductReply) {
+    option (google.api.http) = {
+      put: "/v1/users/{user_id}/products/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteProduct (ProductRequest) returns (DeleteReply) {
+    option (google.api.http) = {
+      delete: "/v1/users/{user_id}/products/{id}"
+    };
+  }
+
+  rpc ListUserProducts (UserProductListRequest) returns (UserProductListReply) {
+    option (google.api.http) = {
+      get: "/v1/users/{user_id}/products"
+    };
+  }
+}
+
+message CreateProductRequest {
+  int32 user_id = 1;
+  string name = 2;
+  string brand = 3;
+  string description = 4;
+}
+
+message UpdateProductRequest {
+  int32 user_id = 1;
+  int32 id = 2;
+  string name = 3;
+  string brand = 4;
+  string description = 5;
+}
+
+message ProductRequest {
+  int32 user_id = 1;
+  int32 id = 2;
+}
+
+message ProductReply {
+  int32 id = 1;
+  string name = 2;
+  string brand = 3;
+  string description = 4;
+  int32 user_id = 5;
+}
+
+message DeleteReply {
+  string message = 1;
+}
+
+message UserProductListRequest {
+  int32 user_id = 1;
+}
+
+message UserProductListReply {
+  repeated ProductReply products = 1;
+}

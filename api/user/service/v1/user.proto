@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package user.service.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "kratos/api/user/service/v1;v1";
+
+service UserService {
+  // Create a new user
+  rpc Register (RegisterRequest) returns (UserReply) {
+    option (google.api.http) = {
+      post: "/v1/users/register"
+      body: "*"
+    };
+  }
+
+  // Get user by ID
+  rpc GetUser (UserRequest) returns (UserReply) {
+    option (google.api.http) = {
+      get: "/v1/users/{id}"
+    };
+  }
+
+  // Update user
+  rpc UpdateUser (UpdateUserRequest) returns (UserReply) {
+    option (google.api.http) = {
+      put: "/v1/users/{id}"
+      body: "*"
+    };
+  }
+
+  // Delete user
+  rpc DeleteUser (UserRequest) returns (DeleteReply) {
+    option (google.api.http) = {
+      delete: "/v1/users/{id}"
+    };
+  }
+
+  // List all users
+  rpc ListUsers (ListUsersRequest) returns (ListUsersReply) {
+    option (google.api.http) = {
+      get: "/v1/users"
+    };
+  }
+}
+
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  int32 age = 4;
+}
+
+message UpdateUserRequest {
+  int32 id = 1;
+  string username = 2;
+  string email = 3;
+  int32 age = 4;
+}
+
+message UserRequest {
+  int32 id = 1;
+}
+
+message UserReply {
+  int32 id = 1;
+  string username = 2;
+  string email = 3;
+  int32 age = 4;
+}
+
+message DeleteReply {
+  string message = 1;
+}
+
+message ListUsersRequest {}
+
+message ListUsersReply {
+  repeated UserReply users = 1;
+}
